@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:routing_manager/domain/models/routes.dart';
 
 import '../domain/products_repository.dart';
 
 class ProductListScreen extends StatelessWidget {
   final products = ProductsRepository.getProducts();
 
-  ProductListScreen({super.key});
+  final VoidCallback onTapBasket;
+  final ValueChanged<String> onTapProductDetails;
+
+  ProductListScreen({
+    Key? key,
+    required this.onTapBasket,
+    required this.onTapProductDetails,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +22,7 @@ class ProductListScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.basket);
-            },
+            onPressed: onTapBasket,
           ),
         ],
       ),
@@ -27,31 +31,25 @@ class ProductListScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final product = products[index];
           return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                Routes.product,
-                arguments: product.id,
-              );
-            },
+            onTap: () => onTapProductDetails(product.id),
             child: Container(
               height: 100,
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: Colors.grey[200],
+              color: Theme.of(context).colorScheme.onInverseSurface,
               child: Row(
                 children: [
                   Container(
                     width: 80,
                     height: 80,
                     margin: const EdgeInsets.all(10),
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.tertiary,
                     child: Center(
                       child: Text(
                         product.id,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onTertiary,
                         ),
                       ),
                     ),
@@ -65,15 +63,19 @@ class ProductListScreen extends StatelessWidget {
                         children: [
                           Text(
                             product.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.scrim,
                             ),
                           ),
                           const SizedBox(height: 5),
                           Text(
                             product.description,
-                            style: const TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                         ],
                       ),
