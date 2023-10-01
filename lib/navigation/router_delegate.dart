@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routing_manager/main.dart';
 import 'package:routing_manager/navigation/navigation_state.dart';
 import 'package:routing_manager/ui/basket_screen.dart';
 import 'package:routing_manager/ui/product_details.screen.dart';
@@ -17,7 +18,15 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
   NavigationState? state;
 
   @override
+  NavigationState get currentConfiguration {
+    l.d('call: currentConfiguration');
+    return state ?? NavigationState.root();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    l.d('build: Navigator');
+
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -55,6 +64,8 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
 
   @override
   Future<void> setNewRoutePath(NavigationState configuration) async {
+    l.d('call: setNewRoutePath');
+
     state = configuration;
     notifyListeners();
   }

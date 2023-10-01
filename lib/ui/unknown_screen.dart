@@ -6,8 +6,11 @@ class UnknownScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Unknown screen: $name"),
+    return Scaffold(
+      appBar: AppBar(),
+      body: const Center(
+        child: Text("404"),
+      ),
     );
   }
 }
